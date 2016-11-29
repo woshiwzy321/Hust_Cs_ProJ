@@ -1,0 +1,14 @@
+int main()
+{
+	int k;	
+	int dd;
+}
+int j;
+int cao(int i,int j)
+{
+	int dd;	
+	int ff;
+	int k;
+	return 0;
+}
+

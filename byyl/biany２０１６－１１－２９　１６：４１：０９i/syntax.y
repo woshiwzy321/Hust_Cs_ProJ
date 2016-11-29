@@ -14,6 +14,7 @@
 	extern char* struNm;
 	extern char* scope1_stru;
 	extern char* scope2_var;
+	char*  xdsb;
 %}
 %union{
 struct ast* a;
@@ -73,7 +74,10 @@ ExtDef: Specifier ExtDecList SEMI //检查变量是否重复定义
     | Specifier FunDec CompSt //检查函数返回值类型与函数类型是否一致
     {
         $$=newast("ExtDef",3,$1,$2,$3);
-	newfunc(4,$1);
+		newfunc(4,$1);
+		//printf("%s \n",$2->content);getchar();getchar();
+		//xdsb=$2->content;
+		//scopevar(NULL);
 	
     }
 ;
@@ -129,7 +133,11 @@ FunDec: ID LP VarList RP //检查函数是否重复定义
 	    flag_errfind=1;
 	}
 	else
-	    newfunc(2,$1);
+		{
+			newfunc(2,$1);
+			scopexcvar($1->content);
+		}
+	    
     }
     | ID LP RP 
     {
@@ -147,7 +155,11 @@ FunDec: ID LP VarList RP //检查函数是否重复定义
 VarList: ParamDec COMMA VarList {$$=newast("VarList",3,$1,$2,$3);}
     | ParamDec {$$=newast("VarList",1,$1);}
 ;
-ParamDec: Specifier VarDec {$$=newast("ParamDec",2,$1,$2);}
+ParamDec: Specifier VarDec {
+	$$=newast("ParamDec",2,$1,$2);
+	/*printf("%s %s",$1->content,$2->content);getchar();getchar();*/
+	newxcvar(2,$1,$2);$2->tag=6;
+	}
 ;
 CompSt: LC DefList StmtList RC {$$=newast("Compst",4,$1,$2,$3,$4);}
 ;
@@ -376,7 +388,6 @@ Exp: Exp ASSIGNOP Exp //检查赋值号两边的表达式类型是否一致
     | FLOAT {$$=newast("Exp",1,$1);$$->tag=3;$$->type="float";$$->value=$1->value;}
     | error RB {yyerrok;}
     | error RP {yyerrok;}
-    | error RC {yyerrok;}
     | error ASSIGNOP Exp {yyerrok;}
     | error RELOP Exp {yyerrok;}
     | error PLUS Exp {yyerrok;}

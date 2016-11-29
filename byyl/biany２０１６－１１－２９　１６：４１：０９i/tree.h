@@ -12,7 +12,7 @@ struct ast
 {
     int line; //行号
     char* name;//语法单元的名字
-    int tag;//1为变量，2为函数，3为常数,4为数组，5为结构体
+    int tag;//1为变量，2为函数，3为常数,4为数组，5为结构体,6为型参
     struct ast *l;//左孩子
     struct ast *r;//右孩子
     char* content;//语法单元语义值
@@ -34,6 +34,13 @@ struct var{
     char* type;//变量类型
     struct var* next;
 }*varhead,*vartail;
+/*变量符号表链表*/
+struct xcvar{
+    char* scope;//作用域    
+    char* name;//变量名
+    char* type;//变量类型
+    struct xcvar* next;
+}*xcvarhead,*xcvartail;
 /*函数符号表链表*/
 struct func{
     int tag;//标志是否定义
@@ -67,6 +74,11 @@ char* var_type(struct ast* temp);
 /*建立变量作用域*/
 void scopevar(char* name);
 
+
+/*建立形参变量符号表*/
+void newxcvar(int num,...);
+/*建立形参变量作用域*/
+void scopexcvar(char* name);
 char* var_scope(struct ast* temp);
 /*查找变量是否定义，1表示已经定义，0表示未定义(update)*/
 int check_vardef(struct var* headtail);

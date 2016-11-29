@@ -7,6 +7,7 @@ int x1=0;
 int x2=0;
 int x3=0;
 int x4=0;
+int x5=0;//形参
 char* struNm;
 int paramnum1= 0;
 char* scope1_stru;
@@ -209,23 +210,26 @@ int check_vardef(struct var* headtail)
 		for(int j=i;j<x1;j++)
 		{
 			if(temp2->name!=NULL&&temp1->name!=NULL)
-			{
+			{printf("%s %s",temp1->name,temp2->name);getchar();getchar();
 				if(!strcmp(temp2->name,temp1->name))
 				{
 					if(temp2->scope==NULL&&temp1->scope==NULL)
 					{
-						p=temp1->name;flag_errfind=1;flag_errfind2=1;break;break;	
+						p=temp1->name;flag_errfind=1;flag_errfind2=1;goto wzyerr;
 					}
 					else if(temp2->scope!=NULL&&temp1->scope!=NULL)
 						if(!strcmp(temp2->scope,temp1->scope))
 						{
-							p=temp1->name;flag_errfind=1;flag_errfind2=1;	break;break;
+							p=temp1->name;flag_errfind=1;flag_errfind2=1;goto wzyerr;	//break;break;
 						}
 				}
 		 	}	
+		 	temp2=temp2->next;
 		}	
 		temp1=temp1->next;
+
 	}
+	wzyerr:
 	if(flag_errfind2==1)
 	{
 		 printf("Error type 3 at line %d：Redefined variable '%s'\n",yylineno,p);
@@ -233,6 +237,36 @@ int check_vardef(struct var* headtail)
 	}
 	else return 0; 
 }
+
+/*建立形参变量符号表*/
+void newxcvar(int num,...)
+{
+	va_list valist;//定义变长参数列表
+    struct xcvar *a=(struct xcvar*)malloc(sizeof(struct xcvar));//新生成的父节点
+    struct ast *temp;
+    va_start(valist,num);//初始化变长参数为num后的参数
+    temp=va_arg(valist, struct ast*);//取变长参数列表中的第一个结点
+	a->type = temp->content;
+    temp=va_arg(valist, struct ast*);//取变长参数列表中的第二个结点
+    a->name = temp->content;
+    xcvartail->next = a;
+    xcvartail = a;
+    x5++;	
+}
+
+void scopexcvar(char* name)
+{
+	struct xcvar* temp=xcvarhead;
+	while(temp!=NULL)
+	{
+		if(temp->scope==NULL)
+		{
+			temp->scope=name;
+		}
+		temp=temp->next;
+	}
+}	
+
 
 /*建立函数符号表*/
 void newfunc(int num,...)
@@ -422,18 +456,20 @@ int check_arrdef(struct array* headtail)
 					if(temp2->scope==NULL&&temp1->scope==NULL)
 					{
 						p=temp1->name;flag_errfind=1;
-				        	flag_errfind3=1;break;break;	
+				        	flag_errfind3=1;goto wzyerr1;	
 					}
 					else if(temp2->scope!=NULL&&temp1->scope!=NULL)
 						if(!strcmp(temp2->scope,temp1->scope))
 						{
-							p=temp1->name;flag_errfind=1;flag_errfind3=1;	break;break;
+							p=temp1->name;flag_errfind=1;flag_errfind3=1;goto wzyerr1;
 						}
 				}
 		 	}	
+		 temp2=temp2->next;
 		}	
 		temp1=temp1->next;
 	}
+	wzyerr1: 
 	if(flag_errfind3==1)
 	{
 		 printf("Error type 3 at line %d：Redefined variable(array) '%s'\n",yylineno,p);
@@ -497,7 +533,9 @@ char* struc_type(struct ast* temp)
 int main(int argc,char** argv)
 {
 	varhead=(struct var*)malloc(sizeof(struct var));//变量符号表头指针
-        vartail=varhead;//变量符号表尾指针
+    vartail=varhead;//变量符号表尾指针
+    xcvarhead=(struct xcvar*)malloc(sizeof(struct xcvar));//变量符号表头指针
+    xcvartail=xcvarhead;//变量符号表尾指针
 	funchead=(struct func*)malloc(sizeof(struct func));//函数符号表头指针
 	functail=(struct func*)malloc(sizeof(struct func));//函数符号表尾指针        
 	funchead->next = functail;//函数符号表尾指针
@@ -530,6 +568,13 @@ int main(int argc,char** argv)
 	    		funchead=funchead->next;
 	    		printf("%s  %s  %s  %d\n",funchead->type,funchead->name,funchead->rtype,funchead->paramnum);
 		}
+		printf("形参变量符号表\n");
+		for(i = 0; i < x5; i++)
+		{
+	    		xcvarhead=xcvarhead->next;
+	    		printf("%s  %s  %s\n",xcvarhead->type,xcvarhead->name,xcvarhead->scope);
+		}
+		printf("\n");
 		printf("\n");
         	printf("数组符号表\n");
 		for(i = 0; i < x3; i++)
