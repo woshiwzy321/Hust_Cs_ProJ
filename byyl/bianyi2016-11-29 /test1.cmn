@@ -1,0 +1,151 @@
+//err type 1
+/*int main()
+{
+	int i = 0;
+	j = j + j;
+}*/
+//err type 2
+/*int main()
+{
+	int i = 0;
+	inc(i);
+}*/
+//err type 3
+/*int main()
+{
+	int i;
+	int j;
+	int j;
+}*/
+//err type 4 
+/*int func(int i)
+{
+	return i;
+}
+int func()
+{
+	return 0;
+}
+int main()
+{
+	
+}*/
+//err type 5
+/*int main()
+{
+	int i;
+	i = 3.7;
+}*/
+//ERR TYPE 6 
+/*int main()
+{
+	int i;
+	10 = i;
+}*/
+//err type 7
+/*int main()
+{
+	float j;
+	10 + j;
+}*/
+//err type 8
+/*int main()
+{
+	float j=1.7;
+	return j;
+}*/
+//err type 9 
+/*int func(int i)
+{
+	return i;
+}
+int main()
+{
+	func(1,2);
+}*/
+//err type 10 prob
+/*int main()
+{
+	int i;
+	i[10];
+}*/
+//err 11
+/*int main()
+{
+	int i;
+	i(10);
+}*/
+//err type 12
+/*int main()
+{
+	int i[10];
+	i[1.5] = 10;
+}*/
+//err type 13
+/*struct post
+{
+	float x;
+	float y;
+};
+
+int main()
+{
+	int  i;
+	i.x;
+}*/
+//err type 14 prob
+/*struct post
+{
+	float x;
+	float y;
+};
+
+int main()
+{
+	struct post  p;
+	if(p.n == 3.7)
+	{
+		return 0;
+	}
+}*/
+//err type 15
+/*struct post
+{
+	float x;
+	float y;
+	int x;
+};
+
+int main()
+{
+	
+}*/
+//err type 16 
+/*struct post
+{
+	float x;
+	
+	
+};
+struct post
+{
+	float y;
+};
+int main()
+{
+	
+}*/
+//err type 17
+/*int main()
+{
+	struct pos s;
+}*/
+
+int jb(int i,int j)
+{
+		
+}
+int main()
+{
+	jb(2,3);
+}
