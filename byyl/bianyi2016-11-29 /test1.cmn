@@ -115,37 +115,49 @@ int main()
 	float y;
 	int x;
 };
-
-int main()
-{
-	
-}*/
+*/
 //err type 16 
-/*struct post
+
+struct post
+{
+	struct post1
 {
 	float x;
 	
 	
 };
-struct post
-{
 	float y;
 };
 int main()
 {
 	
-}*/
+}
 //err type 17
 /*int main()
 {
 	struct pos s;
 }*/
 
-int jb(int i,int j)
+/*struct pos
 {
-		
+	int i;
+	int j;
+	struct dd{
+	int d;
+	}d;
+};
+int main()
+{
+	int i;
+}*/
+/*int dd()
+{
+	int dds()
+	{
+
+	};
 }
 int main()
 {
-	jb(2,3);
-}
+	int i;
+}*/

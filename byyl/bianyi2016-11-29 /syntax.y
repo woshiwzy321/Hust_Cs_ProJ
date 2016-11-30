@@ -6,6 +6,7 @@
 	//#define YYDEBUG 1
 	//yydebug = 1;
 	int a,b;
+	int a_err=0;
 	extern int yyerror(const char* msg);
 	extern int yylex(void);
 	int paramnum = 0;
@@ -14,7 +15,8 @@
 	extern char* struNm;
 	extern char* scope1_stru;
 	extern char* scope2_var;
-	char*  xdsb;
+	char*  scopea;
+	char*  scopeb;
 	extern int x5,x6;
 %}
 %union{
@@ -49,7 +51,6 @@ Program: ExtDefList
 	{
 	    $$=newast("Program",1,$1);
 	    	//printf("%s",scvarhead->next->type);getchar();getchar();
-
         if(!check_vardef(varhead)&&!check_arrdef(arrayhead))
 	    if(flag_errfind == 0)
  	    {
@@ -196,6 +197,10 @@ Def: Specifier DecList SEMI //检查变量是否重复定义
 	else if($2->tag==4) newarray(3,$1,$2,sz_dx);
     	else newvar(2,$1,$2);
     }
+    |Specifier SEMI
+    {
+    	$$=newast("Def",2,$1,$2);
+        }
 ;
 DecList: Dec {$$=newast("DecList",1,$1);}
     | Dec COMMA DecList {$$=newast("DecList",3,$1,$2,$3);$$->tag=$3->tag;}
@@ -213,6 +218,23 @@ Exp: Exp ASSIGNOP Exp //检查赋值号两边的表达式类型是否一致
 	    flag_errfind=1;
 	 }
 	else*/
+	 scopea=var_scope($1);
+	 scopeb=var_scope($3);
+	//printf("%s a a %s",scopea,scopeb);
+	//	getchar();getchar();
+	if(scopea!=NULL||scopeb!=NULL)
+	{	
+		//getchar();getchar();
+	    flag_errfind=1;
+	    if(scopea!=NULL)
+	    {
+	    	printf("Error type 1 at line %d：Undefined varible at %s \n",yylineno,$1->content);
+	    	a_err=1;
+	    }
+		if(scopeb!=NULL&&a_err!=1)
+	    	printf("Error type 1 at line %d：Undefined varible at %s \n",yylineno,$3->content);
+	}	
+	else
 	if($1->tag == 3)
 	{
 		printf("Error type 6 at line %d：The left-hand side of an assignment must be a variable\n",yylineno);
@@ -234,14 +256,23 @@ Exp: Exp ASSIGNOP Exp //检查赋值号两边的表达式类型是否一致
     | Exp PLUS Exp //检查操作数类型是否一致
     {   
 	$$=newast("Exp",3,$1,$2,$3);
-//printf("%s a a %s",$1->type,$3->type);
-//getchar();getchar();
-	if($1->type==NULL||$3->type==NULL)
+	//printf("%s a a %s",$1->type,$3->type);
+	//getchar();getchar();
+	 scopea=var_scope($1);
+	 scopeb=var_scope($3);
+	//printf("%s a a %s",scopea,scopeb);
+	//	getchar();getchar();
+	if(scopea!=NULL||scopeb!=NULL)
 	{	
-	    //printf("%s a a %s",$1->type,$3->type);
-//getchar();getchar();
-	    //flag_errfind=1;
-	    //printf("Error type 7 at line %d：Type mismatched for operands\n",yylineno);
+		//getchar();getchar();
+	    flag_errfind=1;
+	    if(scopea!=NULL)
+	    {
+	    	printf("Error type 1 at line %d：Undefined varible at %s \n",yylineno,$1->content);
+	    	a_err=1;
+	    }
+		if(scopeb!=NULL&&a_err!=1)
+	    	printf("Error type 1 at line %d：Undefined varible at %s \n",yylineno,$3->content);
 	}	
 	else if(strcmp($1->type,$3->type))
 	{	
@@ -252,9 +283,21 @@ Exp: Exp ASSIGNOP Exp //检查赋值号两边的表达式类型是否一致
     | Exp MINUS Exp 
     {
 	$$=newast("Exp",3,$1,$2,$3);
-	if($1->type==NULL||$3->type==NULL)
-	{
-	    //flag_errfind=1;printf("Error type 7 at line %d：Type mismatched for operands\n",yylineno);
+	 scopea=var_scope($1);
+	 scopeb=var_scope($3);
+	//printf("%s a a %s",scopea,scopeb);
+	//	getchar();getchar();
+	if(scopea!=NULL||scopeb!=NULL)
+	{	
+		//getchar();getchar();
+	    flag_errfind=1;
+	    if(scopea!=NULL)
+	    {
+	    	printf("Error type 1 at line %d：Undefined varible at %s \n",yylineno,$1->content);
+	    	a_err=1;
+	    }
+		if(scopeb!=NULL&&a_err!=1)
+	    	printf("Error type 1 at line %d：Undefined varible at %s \n",yylineno,$3->content);
 	}	
 	else if(strcmp($1->type,$3->type))
 	{	
@@ -265,9 +308,21 @@ Exp: Exp ASSIGNOP Exp //检查赋值号两边的表达式类型是否一致
     | Exp STAR Exp 
     {
 	$$=newast("Exp",3,$1,$2,$3);
-	if($1->type==NULL||$3->type==NULL)
-	{
-	   // flag_errfind=1;printf("Error type 7 at line %d：Type mismatched for operands\n",yylineno);
+	 scopea=var_scope($1);
+	 scopeb=var_scope($3);
+	//printf("%s a a %s",scopea,scopeb);
+	//	getchar();getchar();
+	if(scopea!=NULL||scopeb!=NULL)
+	{	
+		//getchar();getchar();
+	    flag_errfind=1;
+	    if(scopea!=NULL)
+	    {
+	    	printf("Error type 1 at line %d：Undefined varible at %s \n",yylineno,$1->content);
+	    	a_err=1;
+	    }
+		if(scopeb!=NULL&&a_err!=1)
+	    	printf("Error type 1 at line %d：Undefined varible at %s \n",yylineno,$3->content);
 	}	
 	else if(strcmp($1->type,$3->type))
 	{	
@@ -278,10 +333,21 @@ Exp: Exp ASSIGNOP Exp //检查赋值号两边的表达式类型是否一致
     | Exp DIV Exp 
     {
 	$$=newast("Exp",3,$1,$2,$3);
-	if($1->type==NULL||$3->type==NULL)
-	{
-	   // flag_errfind=1;
-	  //  printf("Error type 7 at line %d：Type mismatched for operands\n",yylineno);
+	 scopea=var_scope($1);
+	 scopeb=var_scope($3);
+	//printf("%s a a %s",scopea,scopeb);
+	//	getchar();getchar();
+	if(scopea!=NULL||scopeb!=NULL)
+	{	
+		//getchar();getchar();
+	    flag_errfind=1;
+	    if(scopea!=NULL)
+	    {
+	    	printf("Error type 1 at line %d：Undefined varible at %s \n",yylineno,$1->content);
+	    	a_err=1;
+	    }
+		if(scopeb!=NULL&&a_err!=1)
+	    	printf("Error type 1 at line %d：Undefined varible at %s \n",yylineno,$3->content);
 	}	
 	else if(strcmp($1->type,$3->type))
 	{	

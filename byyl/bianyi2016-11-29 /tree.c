@@ -155,9 +155,9 @@ void scopevar(char* name)
 {
 	struct var* temp=varhead;
 	while(temp!=NULL)
-	{
+	{	//printf("%s",temp->scope);getchar();getchar();
 		if(temp->scope==NULL)
-		{
+		{   
 			temp->scope=name;
 		}
 		temp=temp->next;
@@ -222,7 +222,7 @@ int check_vardef(struct var* headtail)
 					else if(temp2->scope!=NULL&&temp1->scope!=NULL)
 						if(!strcmp(temp2->scope,temp1->scope))
 						{
-							p=temp1->name;flag_errfind=1;flag_errfind2=1;
+							p=temp1->name;flag_errfind=1;flag_errfind2=2;
 							break;
 						}
 				}
@@ -236,6 +236,12 @@ int check_vardef(struct var* headtail)
 	if(flag_errfind2==1)
 	{
 		 printf("Error type 3 at line %d：Redefined variable '%s'\n",yylineno,p);
+		return 1;
+	}
+	else
+	if(flag_errfind2==2)
+	{
+		 printf("Error type 15 at line %d：Redefined filed '%s'\n",yylineno,p);
 		return 1;
 	}
 	else return 0; 
@@ -538,7 +544,7 @@ int check_arrdef(struct array* headtail)
 					else if(temp2->scope!=NULL&&temp1->scope!=NULL)
 						if(!strcmp(temp2->scope,temp1->scope))
 						{
-							p=temp1->name;flag_errfind=1;flag_errfind3=1;//goto wzyerr1;
+							p=temp1->name;flag_errfind=1;flag_errfind3=2;//goto wzyerr1;
 							break;
 						}
 				}
@@ -552,6 +558,12 @@ int check_arrdef(struct array* headtail)
 	if(flag_errfind3==1)
 	{
 		 printf("Error type 3 at line %d：Redefined variable(array) '%s'\n",yylineno,p);
+		return 1;
+	}
+	else
+	if(flag_errfind3==2)
+	{
+		 printf("Error type 15 at line %d：Redefined filed(array) '%s'\n",yylineno,p);
 		return 1;
 	}
 	else return 0; 
@@ -634,52 +646,74 @@ int main(int argc,char** argv)
 	}
 	yyrestart(f);
 	yyparse();
-
-
 	if(flag_errfind ==0)
 	{
-		printf("变量符号表\n");
-		for(i = 0; i < x1; i++)
+		if(x1!=0)
 		{
-	    		varhead=varhead->next;
-	    		printf("%s  %s  %s\n",varhead->type,varhead->name,varhead->scope);
+			printf("/*********************变量符号表***********************/\n");
+			printf("变量类型　　　　变量名字　　变量所属(NULL为全局)\n");
+			for(i = 0; i < x1; i++)
+			{
+		    		varhead=varhead->next;
+		    printf("%s  　　　　  　　%s  　　　　%s\n",varhead->type,varhead->name,varhead->scope);
+			}
+			printf("\n");
 		}
-		printf("\n");
-		printf("函数符号表\n");
-		for(i = 0; i < x2; i++)
+		if(x3!=0)
 		{
-	    		funchead=funchead->next;
-	    		printf("%s  %s  %s  %d\n",funchead->type,funchead->name,funchead->rtype,x5);
+			printf("/*******************数组符号表***********************/\n");
+			printf("数组类型　　数组名字　　数组大小　　数组所属\n");
+			for(i = 0; i < x3; i++)
+			{
+			    arrayhead=arrayhead->next;
+			printf("%s  　　　  　%s 　　　　%d 　　　　　%s\n",arrayhead->type,arrayhead->name,arrayhead->size,arrayhead->scope);
+			}
 		}
-		printf("形参变量符号表\n");
-		for(i = 0; i < x5; i++)
+		if(x4!=0)
 		{
-	    		xcvarhead=xcvarhead->next;
-	    		printf("%s  %s  \n",xcvarhead->type,xcvarhead->name);
+			printf("/******************结构体符号表*********************/\n");
+			printf("结构体类型　　　结构体名字\n");
+			for(i = 0; i < x4; i++)
+			{
+			    struchead=struchead->next;
+			printf("%s              %s\n",struchead->type,struchead->name);
+			}
+			printf("\n");
 		}
-		printf("\n");
-
-		printf("实参变量符号表\n");
-		for(i = 0; i < x6; i++)
+		if(x2!=0)
 		{
-	    		scvarhead=scvarhead->next;
-	    		printf("%s  %s  %f\n",scvarhead->type,scvarhead->name,scvarhead->number);
+			printf("/******************函数符号表*********************/\n");
+			printf("函数类型　　　　函数名字　　　　　函数返回值类型(NULL为无返回值)   形参个数\n");
+			for(i = 0; i < x2; i++)
+			{
+		    		funchead=funchead->next;
+		    printf("%s              %s             %s                            %d\n",funchead->type,funchead->name,funchead->rtype,x5);
+			}
+			printf("\n");	
 		}
-		printf("\n");
-		printf("\n");
-        	printf("数组符号表\n");
-		for(i = 0; i < x3; i++)
+		if(x5!=0)
+		{	
+			printf("/***************形参变量符号表*********************/\n");
+			printf("形参类型　　　　形参名字\n");
+			for(i = 0; i < x5; i++)
+			{
+		    		xcvarhead=xcvarhead->next;
+		    printf("%s              %s  \n",xcvarhead->type,xcvarhead->name);
+			}
+			printf("\n");
+		}
+		if(x6!=0)
 		{
-		    arrayhead=arrayhead->next;
-		    printf("%s  %s %d %s\n",arrayhead->type,arrayhead->name,arrayhead->size,arrayhead->scope);
+			printf("/****************实参变量符号表********************/\n");
+			printf("实参类型　　实参名字(变量传入)　　实参数值(如果为数字传入)\n");
+			for(i = 0; i < x6; i++)
+			{
+		    		scvarhead=scvarhead->next;
+		    printf("%s            %s                   %f\n",scvarhead->type,scvarhead->name,scvarhead->number);
+			} 
+			printf("\n");
 		}
-		printf("\n");
-		printf("结构体符号表\n");
-		for(i = 0; i < x4; i++)
-		{
-		    struchead=struchead->next;
-		    printf("%s  %s\n",struchead->type,struchead->name);
-		}
+			
 		}
 	return 0;
 }
