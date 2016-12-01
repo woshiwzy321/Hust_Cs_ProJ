@@ -19,18 +19,18 @@ void V(int semid,int index)
 	struct sembuf sem;	
 	sem.sem_num = index;
 	sem.sem_op =  1;
-      	sem.sem_flg = 0;	
-      	semop(semid,&sem,1);	
-      	return;
+    sem.sem_flg = 0;	
+    semop(semid,&sem,1);	
+    return;
 }
 void P(int semid,int index)
 {	 
 	struct sembuf sem;	
-        sem.sem_num = index;
-        sem.sem_op = -1;	
-        sem.sem_flg = 0; //操作标记：0或IPC_NOWAIT等
-        semop(semid,&sem,1);	//1:表示执行命令的个数	
-        return;
+    sem.sem_num = index;
+    sem.sem_op = -1;	
+    sem.sem_flg = 0; //操作标记：0或IPC_NOWAIT等
+    semop(semid,&sem,1);	//1:表示执行命令的个数	
+    return;
 }
 void* subp1()
 {
@@ -38,7 +38,7 @@ void* subp1()
         {
                 P(l1,0);
                 a=a+j;
-		V(l1,1);
+				V(l1,1);
         }
 }
 void* subp2()
@@ -46,7 +46,7 @@ void* subp2()
         for(int i=0;i<100;i++)
         {
               P(l1,1);
-	      printf("现在的和是%d\n",a);
+	      printf("第%d次：现在的和是%d\n",i+1,a);
               V(l1,0);
 	}
 }
@@ -71,7 +71,7 @@ int main()
 	}
 	pthread_join(p1,NULL);
 	pthread_join(p2,NULL);
-	semctl(l1,1,IPC_RMID);
+	semctl(l1,2,IPC_RMID);
 	return 0;				
 }
 
