@@ -1,5 +1,5 @@
 # include"tree.h"
-extern void yyrestart(FILE * f);
+	extern void yyrestart(FILE * f);
 extern int yyparse(void);
 extern int yyerror(const char*);
 int i,flag_errfind=0;
