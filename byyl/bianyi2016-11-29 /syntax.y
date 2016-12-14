@@ -445,7 +445,7 @@ Exp: Exp ASSIGNOP Exp //检查赋值号两边的表达式类型是否一致
 	//printf("%d %d   sdaaasdssa\n",is_var_define($1),scope2_var);getchar();getchar();
 	a=!!strcmp(scope1_stru,"int");
 	b=!!strcmp(scope1_stru,"float");
-	printf("%d %d   sdaaasdssa\n",a,b);getchar();getchar();
+	//printf("%d %d   sdaaasdssa\n",a,b);getchar();getchar();
 	if((is_var_define($1)&&!(a&&b))==1)
 	{
 	    printf("Error type 13 at line %d：Illegal use of '.'\n",yylineno);
