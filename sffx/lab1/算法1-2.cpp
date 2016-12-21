@@ -110,7 +110,7 @@ int main()
 	int p=3,q=8,k=4;
 	int answer;
 	answer=SEL(A,p,q,k);
-	printf("最终结果是%d  \n",A[answer]);
+	printf("最终结果是%d  \n",answer);
 	for(int tt=0;tt<MAX;tt++)
 	{
 		printf("%d  ",A[tt]);
