@@ -100,6 +100,7 @@ int main(int argc,char** argv)
 					}
 				}
 				V(l1,i);
+				printf("%d\n",i);
 				if(i==3)//适配以满足循环
 				{
 					i=-1;
@@ -135,7 +136,7 @@ int main(int argc,char** argv)
 					if(segment_memory[i2][j2]!=EOF)
 					{  
 						fputc(segment_memory[i2][j2],write_file);            
-						printf("现在写入的是%c\n",segment_memory[i2][j2]);
+					//	printf("现在写入的是%c\n",segment_memory[i2][j2]);
 					}
 						//fputc(segment_memory[i2][j2],write_file);
 					else
