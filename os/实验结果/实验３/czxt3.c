@@ -100,7 +100,7 @@ int main(int argc,char** argv)
 					}
 				}
 				V(l1,i);
-				printf("%d\n",i);
+				printf("%d",i);
 				if(i==3)//适配以满足循环
 				{
 					i=-1;

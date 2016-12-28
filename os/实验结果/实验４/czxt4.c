@@ -145,7 +145,7 @@ void printdir(char *dir, int depth,char *dirname)
     struct group*p2;
     struct passwd*p1;
     char path[100];
-    path[0]="\0";
+    path[0]=(char)"\0";
     if  ((dp = opendir(dir))== NULL)
     {     
         printf("文件目录打开失败！(是否具有相应的访问权限？！\n");
