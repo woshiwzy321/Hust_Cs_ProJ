@@ -1,7 +1,8 @@
-#include <iostream>
 #include <math.h>
 #include <stdlib.h> 
-using namespace std;
+#include <stdio.h>
+#include <windows.h>
+int flag=0; 
 bool place(int k, int *X)
 {
         int i;
@@ -30,9 +31,11 @@ void Nqueens(int n,int *X)
              if(X[k]<=n)   //找到了一个位置，而且是合法的
                   if(k==n)   //是不是最后一个皇后，若是则得出一个完整解
                  {
-                          for(int i=1;i<=n;i++)
-                          cout<<X[i]<<" ";
-                          cout<<"\n";
+                        
+						  for(int i=1;i<=n;i++)
+                          printf("%d ",X[i]);
+                          printf("\n");
+                          flag=1;
                    }
                   else    //若不是最后一个皇后，则给下一个皇后找位置
                  {
@@ -46,21 +49,26 @@ void Nqueens(int n,int *X)
 }
 int  main()
 {
-        cout<<"|--------------N皇后问题--------------|"<<endl;
-        cout<<"|-------------------------------------|"<<endl<<endl;
-        int n;
-        int *X;
-        int i;
-        while(i)
-       {
-                 cout<<"请输入皇后的个数:";
-                 cin>>n;
-                 X=new int[n];
-                 cout<<"问题的解有:"<<endl;
-                 Nqueens(n,X);
-                 cout<<"Press<1> to run again"<<endl;
-                 cout<<"Press<0> to exit"<<endl;
-                 cin>>i;
-         }
-         return 0;
+    int n;
+    int *X;
+    int i;
+    while(i)
+   {
+   	 system("cls");
+     printf("请输入皇后问题的大小：");
+     scanf("%d",&n);
+     if(n<=2)printf("此问题无解！\n");
+     else{
+     
+     X=(int *)malloc(n*sizeof(int));
+     
+     Nqueens(n,X);
+     if(flag==0)printf("此问题无解！\n");
+     }
+	 printf("输入1继续运行！输入0停止运行！\n");
+     scanf("%d",&i);
+     
+    // free(X);
+     }
+     return 0;
 }
