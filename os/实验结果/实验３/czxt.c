@@ -71,7 +71,7 @@ int main()
 
 		}
 	}
-	wait(NULL);//	wait(NULL);
+	wait(NULL);	wait(NULL);
 //	printf("%d",get_end);
 		printf("Parent killed!\n");
 	return 0;
