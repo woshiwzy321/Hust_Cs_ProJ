@@ -50,7 +50,6 @@ int place(int k)
     if((fabs(k-j)==fabs(x[j]-x[k]))||(x[j]==x[k])) return 0;
   return 1;
 }
-
 void out()
 {
 	int i,j;
@@ -62,5 +61,4 @@ void out()
         for(j=0;j<7-x[i];j++)printf(" .");
 		putchar('\n');
 	}
-    
 }

@@ -24,9 +24,10 @@ int main()
 		printf("请输入各个边的权值（无法到达输-1）(双向注意)：\n"); 
 		for( i = 0 ; i < N ; i ++ ) 
 			for( j = 0 ; j < N ; j ++ ) 
+			{
 				printf("请输入结点%d到%d的距离: ",i,j);
-				
 				scanf("%d",&COST[i][j]); 
+			} 
 	
 	}
 	if(sel_ch==1)
